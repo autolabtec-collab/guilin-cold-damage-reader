@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>《桂林古本伤寒杂病论》 · 原文</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f5efe3;color:#302820;font:17px/1.6 system-ui,sans-serif}
+    .chapter-page{margin-top:16px;padding:clamp(18px,5vw,40px);background:#fffaf1;border:1px solid #e5d7bf;border-radius:16px}
+    .chapter-page h1{margin:0;font-size:1.15rem}.chapter-page p{font:clamp(18px,3vw,22px)/1.95 "Songti TC","Noto Serif CJK TC",Georgia,serif;margin:12px 0 0;overflow-wrap:anywhere}
+    .chapter-page a{color:#245747;text-underline-offset:4px}
+    .pager{align-items:center;gap:8px;margin:16px 0}.pager a{color:#245747;padding:6px 12px;border:1px solid #c4b69c;border-radius:20px}
+  </style>
+  <link rel="stylesheet" href="book.css">
+  <script src="book-chapters.js"></script>
+  <script src="chapter-study.js"></script>
+  <script src="chapter-study-extra.js"></script>
+  <script src="book-contents.js" defer></script>
+  <script src="term-guide.js" defer></script>
+</head>
+<body>
+  <main>
+    <header class="book-header book-reader-header">
+      <div class="book-heading">
+        <div class="book-name" lang="zh-CN"><span class="book-full-name">《桂林古本伤寒杂病论》</span><span class="book-short-name" aria-hidden="true"><span>Treatise on Cold Damage</span><span>Guilin Edition</span></span></div>
+        <div class="book-actions"><button type="button" class="page-play-button" id="chapter-play" hidden disabled aria-label="播放朗读">▶</button><button type="button" id="reader-language" disabled>English</button><button type="button" data-open-contents>目录</button></div>
+      </div>
+    </header>
+    <section class="chapter-page" lang="zh-Hant">
+      <h1 id="chapter-title" tabindex="-1"></h1>
+      <div id="chapter-text"></div>
+      <audio id="chapter-narration" hidden preload="none"></audio>
+    </section>
+    <nav class="pager" aria-label="原文翻页">
+      <div><a id="prev" hidden>上一页</a></div>
+      <label>页码 <select id="chapter-page"></select></label>
+      <div><a id="next" hidden>下一页</a></div>
+    </nav>
+  </main>
+  <script>
+    const title = document.querySelector('#chapter-title');
+    const body = document.querySelector('#chapter-text');
+    const picker = document.querySelector('#chapter-page');
+    const previous = document.querySelector('#prev');
+    const next = document.querySelector('#next');
+    const languageButton = document.querySelector('#reader-language');
+    const bookTitle = document.querySelector('.book-name');
+    const playButton = document.querySelector('#chapter-play');
+    const narration = document.querySelector('#chapter-narration');
+    const contentsButton = document.querySelector('[data-open-contents]');
+    const pagerLabel = picker.parentElement.firstChild;
+    let language = 'zh';
+    const pageHref = (chapter, index) => '#' + chapter.id + '-page-' + (index + 1);
+    function renderChapter() {
+      const match = /^#(chapter-[0-9]+)(?:-page-([0-9]+))?$/.exec(location.hash);
+      const chapter = bookChapters.find(entry => entry.id === match?.[1]) || bookChapters[0];
+      if (chapter.id === 'chapter-3') {
+        location.replace('original.html#page-1');
+        return;
+      }
+      const index = Math.max(0, Math.min(chapter.pages.length - 1, Number(match?.[2] || 1) - 1));
+      const additional = extraStudyPages.find(entry => entry.chapter === chapter.id && entry.page === index + 1);
+      const translation = additional?.english || chapterStudy[chapter.id]?.[index];
+      if (!translation) language = 'zh';
+      const inEnglish = language === 'en';
+      const studyPage = chapter.id === 'chapter-4' && index === 0;
+      title.closest('section').id = translation ? 'page-1' : '';
+      title.closest('section').lang = inEnglish ? 'en' : 'zh-Hant';
+      title.textContent = inEnglish
+        ? (additional?.title || englishChapterTitles[bookChapters.indexOf(chapter)])
+        : chapter.title;
+      document.title = '《桂林古本伤寒杂病论》 · ' + chapter.title;
+      body.className = inEnglish ? 'whole-page-english' : 'whole-page-original';
+      body.replaceChildren(...(inEnglish ? translation : chapter.pages[index]).map(text => {
+        const paragraph = document.createElement('p');
+        paragraph.textContent = text;
+        return paragraph;
+      }));
+      languageButton.disabled = !translation;
+      playButton.disabled = false;
+      languageButton.title = translation ? '' : '本页英文版待补';
+      languageButton.textContent = inEnglish ? '中文' : 'English';
+      languageButton.lang = inEnglish ? 'zh-CN' : 'en';
+      bookTitle.querySelector('.book-full-name').textContent = inEnglish ? 'Treatise on Cold Damage and Miscellaneous Diseases (Guilin Edition)' : '《桂林古本伤寒杂病论》';
+      bookTitle.lang = inEnglish ? 'en' : 'zh-CN';
+      contentsButton.textContent = inEnglish ? 'Contents' : '目录';
+      contentsButton.lang = inEnglish ? 'en' : 'zh-CN';
+      pagerLabel.textContent = inEnglish ? 'Page ' : '页码 ';
+      previous.textContent = inEnglish ? 'Previous' : '上一页';
+      next.textContent = inEnglish ? 'Next' : '下一页';
+      narration.pause();
+      narration.src = 'audio/' + chapter.id + '-page-' + (index + 1) + '-' + language + '.mp3';
+      updatePlay();
+      window.chapterNoteContext = additional
+        ? {
+            notes: additional.notes.map(note => [
+              1, ...note, chapter.pages[index].findIndex((paragraph, i) => paragraph.includes(note[0]) && translation[i].includes(note[1]))
+            ]),
+            prefix: chapter.id + '-page-' + (index + 1)
+          }
+        : {notes: studyPage ? nextPulsePageNotes : [], prefix: '2'};
+      if (typeof refreshReaderNotes === 'function') refreshReaderNotes();
+      picker.replaceChildren(...chapter.pages.map((_, i) => new Option((i + 1) + ' / ' + chapter.pages.length, pageHref(chapter, i))));
+      picker.selectedIndex = index;
+      previous.hidden = index === 0;
+      next.hidden = index === chapter.pages.length - 1;
+      if (!previous.hidden) previous.href = pageHref(chapter, index - 1);
+      if (!next.hidden) next.href = pageHref(chapter, index + 1);
+    }
+    function updatePlay() {
+      const playing = !narration.paused && !narration.ended;
+      playButton.textContent = playing ? '■' : '▶';
+      playButton.setAttribute('aria-label', language === 'en'
+        ? (playing ? 'Stop narration' : 'Play narration')
+        : (playing ? '停止朗读' : '播放朗读'));
+    }
+    for (const event of ['play', 'pause', 'ended']) narration.addEventListener(event, updatePlay);
+    playButton.addEventListener('click', () => {
+      if (!narration.paused && !narration.ended) {
+        narration.pause();
+        narration.currentTime = 0;
+        return;
+      }
+      const rate = language === 'en' ? 0.85 : 0.75;
+      narration.defaultPlaybackRate = rate;
+      narration.playbackRate = rate;
+      narration.play().catch(updatePlay);
+    });
+    languageButton.addEventListener('click', () => {
+      language = language === 'en' ? 'zh' : 'en';
+      renderChapter();
+    });
+    picker.addEventListener('change', () => { location.hash = picker.value; });
+    window.addEventListener('hashchange', () => {
+      renderChapter();
+      title.focus();
+      title.scrollIntoView({block: 'start'});
+    });
+    renderChapter();
+  </script>
+</body>
+</html>

@@ -100,9 +100,9 @@ function addGuideAudio(heading, src, label, rate) {
 }
 
 reader.addEventListener('click', event => {
-  const link = event.target.closest('a[data-note-id], a[href^="index.html#part-"]');
+  const link = event.target.closest('a[data-note-id], a[href^="original.html#part-"]');
   if (!link || event.defaultPrevented || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-  const match = /^index\.html#part-([0-9]+)$/.exec(link.getAttribute('href'));
+  const match = /^original\.html#part-([0-9]+)$/.exec(link.getAttribute('href'));
   const part = match && typeof parts !== 'undefined' && parts[Number(match[1])];
   const {notes, prefix} = noteContext();
   const note = notes[link.dataset.noteId];

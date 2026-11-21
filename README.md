@@ -1,20 +1,19 @@
 # 《桂林古本伤寒杂病论》双语共读
 
-本仓库试用稿收录〈平脉法第一〉六页。下载 ZIP 并解压后，在浏览器中打开 index.html，可阅读古文、切换英文、点击绿色词条看双语注释。
+全书 105 页，含中文原文、英文译文和可点击的中英注释。
+
+下载 ZIP 后解压，在浏览器打开 **original.html**，从右上角「目录」选择篇章；点 **English** 切换语言。这个包供离线读书和校订。古籍医方属于历史文献内容。
 
 ## 参与校订
 
-用 Issues 指出篇名、页码、原句和建议。也可以在自己的分支修改后提交 Pull Request（改稿提案），供维护者核对。意见有分歧时，欢迎附上所据底本或辞书。
-
-这份试用包采用文字版。读本的朗读音轨在确认分发条件后再准备独立附件。
+在 Issues 提交篇名、页码、原句、建议和可核对的出处。也可以提交 Pull Request。涉及异文时，请注明版本；采用不同解释时，请说明依据。
 
 ## Read and contribute
 
-Download and extract the ZIP, then open index.html in a browser. This trial contains six pages from the first chapter on the pulse, with English translation and bilingual reading notes.
+Extract the ZIP and open **original.html** in a browser. Choose a chapter from the contents, switch between Chinese and English, and select a green term to open its note. To propose corrections, open an Issue or Pull Request with the chapter, page, quotation, proposed change, and a source when available.
 
-To suggest a correction, open an Issue with the page, original wording, and your proposed change. You can also submit a Pull Request. Please cite an edition or reference where relevant.
+## 来源与授权 · Sources and licenses
 
-## 底本 · Source text
-
-维基文库《傷寒雜病論桂林古本白雲閣藏本》。发布前须按所用转录的适用条款核对署名及许可。
-https://zh.wikisource.org/wiki/傷寒雜病論桂林古本白雲閣藏本
+- 中文转录来自维基文库《傷寒雜病論桂林古本白雲閣藏本》及该页贡献者。项目对文字作了分页、排版及必要的标记整理。来源及贡献历史见 [原页面](https://zh.wikisource.org/wiki/傷寒雜病論桂林古本白雲閣藏本)。转录和基于该转录制作的译注按 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) 分发，可复制、改编和商用，须注明来源，分发改编稿时须采用相同许可。
+- 阅读器中本项目独立原创且有权放弃权利的代码采用 [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)。CC0 不改变第三方材料的授权。
+- The Chinese transcription is credited to Chinese Wikisource contributors. The transcription, related translations, and annotations are distributed under CC BY-SA 4.0. Original reader code over which this project can waive rights is dedicated under CC0 1.0. This package contains no synthetic recordings.

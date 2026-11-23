@@ -4,6 +4,12 @@
 
 下载 ZIP 后解压，在浏览器打开 **original.html**，从右上角「目录」选择篇章；点 **English** 切换语言。这个包供离线读书和校订。古籍医方属于历史文献内容。
 
+## 在线朗读 · Online narration
+
+[打开 Farm Anne 在线读本](https://farmanne.com/reading/book/original.html)。点正文一句即可跳到对应的朗读位置，当前句随音频高亮。少数暂未对齐的句子可随正文连续播放。
+
+[Open the online reader](https://farmanne.com/reading/book/original.html) to tap a sentence and hear it read aloud with synchronized highlighting. This repository still includes the offline text edition.
+
 ## 参与校订
 
 在 Issues 提交篇名、页码、原句、建议和可核对的出处。也可以提交 Pull Request。涉及异文时，请注明版本；采用不同解释时，请说明依据。
